@@ -1,0 +1,117 @@
+/*
+All data in the game is compressed with an unusual 7-literal LZSS method, which is
+decompressed on-demand by the game. Pointers are stored as offsets in the model files.
+At loadtime, the game first decompresess the model as is, and immediately after converts
+all offsets in it to absolute addresses.
+
+The formula is simple: Take each player's base model data address and add it to the offsets.
+For player one, the base address is always 80223C58.
+*/
+
+//Another notable addresses is 803B0B00. These are updated every frame and contain bone rotation info.
+//The values in submesh.Y_base,submesh.X_base and submesh.Y_base seem to be base bone positions
+//Reminder to look into whatever the hell 803FCF04 and 803CF470 are.
+
+//80227630 seems to be related to face data
+
+//802278A0
+
+
+
+//All data is little endian.
+
+struct MODEL{
+	char[24] filename;
+	struct root_mesh;
+	struct submesh;			//Repeated multiple times.
+}MODEL;
+
+
+struct root_mesh{
+	u_long GPU_render_polygon_command_address; //Or so it seems. There seems to be extra data like depth priority
+	u_long unknown1;
+	u_long unknown2;
+	u_long vertex_block_address1;
+	u_long weirdo_address;		//In the root mesh, always points to start of model.
+	u_long unknown3;
+	u_long unknown4;
+	u_long unknown5;		
+}root_mesh;
+
+struct submesh{
+	short Y_base;			//These tell the submesh where to derive it's coordinates
+	short X_base;			//from, since they're normally expressed relative to 0,0,0 in
+	short Z_base;			//the vertex blocks.					
+	short padding;	
+	u_long unknown6;		//Highly volatile. Changing these values screws up rendering and usually crashes the game.
+	u_long vertex_block_address;
+	u_long weirdo_address;		//sometimes this points to the very start of the model, sometimes it points to a table of strings.		
+	u_long unknown7;		
+	u_long unknown8;
+	u_long unknown9;
+}submesh;
+
+struct NORMAL_BLOCK{
+	short X;	
+	short Y;	
+	short Z;
+	short index;			//The high byte is generally 00, 01, or 02.
+}NORMAL_BLOCK;
+
+struct VERTEX_BLOCK{
+	short X;	
+	short Y;	
+	short Z;
+	short index;			//The high byte is generally something higher than A0. 
+					//With Xianghua, it's most commonly A0, B0, C0, C1, or C2.
+}VERTEX_BLOCK;
+
+struct POLY_COMMAND{
+	char GP0_ID;			//GP0 command ID (almost always 24h, or something functionally identical like A4h)
+	char depth_priority;		
+	short padding;
+	byte+nibble Vertex1;
+	byte+nibble Vertex2;
+	char Vertex3;
+	u_long unknown_lighting;	//Tons of weird parameters that affect lighting
+	u_long unknown10;		//Doesn't seem to do anything	
+	short CLUT1;
+	char Texcoord1X;
+	char Texcoord1Y;
+	short Texpage;
+	char Texcoord2X;
+	char Texcoord2Y;
+	short padding2;
+	char Texcoord3X;
+	char Texcoord3Y;
+}POLY_COMMAND;
+
+
+//The end of vertex data blocks is usually marked with 00000000 03FF0000 (little endian), usually followed by a normal block right after.
+//For normal data blocks, it's 00000000 05FF0000 (little endian) instead.
+//Sometimes these double words are repeated twice back-to-back, and it's not known why.
+
+/*
+Note that vertex blocks are considered to be a form of "sub-mesh".
+The sub-meshes don't have the same orientation, and their vertex coordinates are calculated
+from world space at 0,0,0. What this means in practice is that one bodypart might appear correct
+When read as XYZ, but another bodypart might appear slanted.
+Additionally, naively loading all vertex blocks as is at once will result in a point cloud mess
+instead of a proper humanoid shape.
+Anyone who has made 3D object mods for Super Mario 64 and Zelda OOT/MM knows what this means.
+
+It is not yet known how the blocks are positioned, properly connected together, nor how faces are drawn.
+*/
+
+
+Plan to interpret model data:
+1) Ignore filename
+2) Read the struct afterwards as root_mesh
+3) Only read data at vertex_block_address1 as vertices, ignore everything else.
+4) When 00000000 03FF0000 is encountered, stop and go back to header
+5) Read any submesh structs afterwards
+6) Read Y,X and Z bases and set them as temporary center coordinates for the vertex block
+7) Read data at vertex_block_address as vertices and calculate their positions relative to the previously read Y,X and Z base coordinates. Ignore everything else.
+8) When 00000000 03FF0000 is encountered, stop and go back to header
+9) Repeat steps 5-8 until submesh.vertex_block_address == 00000000, after which point stop reading header.
+10) Somehow construct faces and gather UV maps. (????)

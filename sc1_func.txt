@@ -1,0 +1,351 @@
+
+//Bone related stuff:
+//Starts at 80053FC8 breakpoint hit when reading 80223C90
+
+lh	v0,-$4(s3) ; 0x80223C90
+nop
+sw	v0,-$8(s1) ; 0x803B0B40
+lh	v0,-$2(s3) ; 0x80223C92
+nop
+sw	v0,-$4(s1) ; 0x803B0B44
+lh	v0,$0(s3)  ; 0x80223C94
+nop
+sw	v0,$0(s1)  ; 0x803B0B48
+addiu	s4,s4,$1
+addiu	s1,s1,$20
+addiu	s5,s5,$20
+slti	v0,s4,$14
+bne	v0,zero,$80053F68		//branches
+addiu	s3,s3,$20
+addiu	v1,s4,-$4
+sltiu	v0,v1,$F
+beq	v0,zero,$80053FAC		//branches
+sll	v0,v1,$02
+lh	a2,-$2(s0) ; 0x803B0F20
+lh	a3,$0(s0)  ; 0x803B0F22
+addiu	s0,s0,$6
+lh	a1,$0(s2)  ; 0x803B0F1E
+addiu	s2,s2,$6
+jal	$800AD3FC
+lui	v0,$8002   ; 0x80018D20
+addiu	v0,v0,-$720e0
+andi	a1,a1,$0FFF
+andi	a2,a2,$0FFF
+andi	a3,a3,$0FFF
+sll	a1,a1,$02
+sll	a2,a2,$02
+sll	a3,a3,$02
+addu	a1,a1,v0
+addu	a2,a2,v0
+addu	a3,a3,v0
+lw	t0,$0(a1)  ; 0x8001900C
+lw	t1,$0(a2)  ; 0x8001CC50
+lw	t2,$0(a3)  ; 0x80019108
+sra	t3,t0,$10
+sra	t4,t1,$10
+sra	t5,52,$10
+mtc2	t3,ir0
+mtc2	t1,ir1
+mtc2	t2,ir2
+mtc2	t5,ir3
+sll	t1,t1,$10
+gpf sf=12 lm=s16   ; wtf
+sra	t1,t1,$10
+mult	t1,t5
+subu	v0,zero,t4
+sh	v0,$c(a0)  ; 0x803B0B58
+sll	t2,t2,$10
+sra	t2,t2,$10
+mfc2	v1,ir1
+mfc2	t6,ir2
+mfc2	t7,ir3
+mtc2	t0,ir0
+mtc2	t1,ir1
+mflo	v0
+mtc2	t2,ir2
+mtc2	t5,ir3
+mult	t1,t2
+gpf sf=12 lm=s16
+sra	v0,v0,$0C
+sh	v0,$6(a0)
+sh	v1,$e(a0)  ; 0x803B0B5A
+mfc2	v1,ir1
+mfc2	t8,ir2
+mfc2	t9,ir3
+mtc2	t4,ir0
+mtc2	t8,ir1
+mflo	v0
+mtc2	t9,ir2
+mtc2	t6,ir3
+mult	t7,t4
+gpf sf=12 lm=s16
+sra	v0,v0,$0C
+sh	v0,$0(a0)  ; 0x803B0B4C
+sh	v1,$10(a0) ; 0x803B0B5C
+mfc2	t0,ir1
+mfc2	t1,ir2
+mfc2	t2,ir3
+mflo t3
+sra	t3,t3,$0C
+subu	a1,t2,t9
+addu	a2,t3,t8
+addu	a3,t0,t7
+subu	v0,t1,t6
+sh	a1,$2(a0)  ; 0x803B0B4E
+sh	a2,$8(a0)  ; 0x803B0B54
+sh	a3,$4(a0)  ; 0x803B0B50
+jr	ra			//jumps back to start and loops
+sh	v0,$a(a0)  ; 0x803B0B56
+
+//With each loop, it reads the next X_base,Y_base and Z_base pair.
+
+//Loop:
+
+lh	v0,-$4(s3) ; 0x80223CB0
+nop
+sw	v0,-$8(s1) ; 0x803AFF3C
+lh	v0,-$2(s3) ; 0x80223CB2
+nop
+sw	v0,-$4(s1) ; 0x803AFF40
+lh	v0,$0(s3)  ; 0x80223CB4
+nop
+sw	v0,$0(s1)  ; 0x803AFF44
+addiu	s4,s4,$1
+addiu	s1,s1,$20
+addiu	s5,s5,$20
+slti	v0,s4,$14
+bne	v0,zero,$80053F68		//branches
+addiu	s3,s3,$20
+addiu	v1,s4,-$4
+sltiu	v0,v1,$F
+beq	v0,zero,$80053FAC		//doesn't branch
+sll	v0,v1,$02
+addu	v0,v0,fp
+lw	v0,$0(v0)  ; 0x8001577C
+nop
+jr	v0				//jumps to 80053FA4
+nop
+bne	s6,zero,$80053FC8		//doesn't branch
+nop
+lh	a2,-$2(s0) ; 0x803B0F26
+lh	a3,$0(s0)  ; 0x803B0F28
+addiu	s0,s0,$6
+lh	a1,$0(s2)  ; 0x803B0F24
+addiu	s2,s2,$6
+jal	$800AD3FC			//jumps
+addu	a0,s5,zero
+lui	v0,$8002   ; 0x80018D20
+addiu	v0,v0-$72E0
+andi	a1,a1,$0FFF			//identical to first loop from this point on
+
+
+------------------------------------------------------------
+
+//Breakpoint hit at 80223C9C (value = 802241A8)
+//Partial Transformation and rotation code for submesh 1
+
+lw	a2,$4(s1)   ; 0x80223C9C
+lbu	a3,$0(s1)   ; 0x80223C98
+lw	t9,$4(a2)   ; 0x802241AC
+lwc2	vxy0,$0(a2) ; 0x802241A8
+lwc2	vxy1,$8(a2) ; 0x802241B0
+lwc2	vxy2,$10(a2); 0x802241B8
+beq	a3,zero,$800AE5BC		//doesn't branch
+mtc2	t9,vz0
+lwc2	vz1,$c(a2)  ; 0x802241B4
+lwc2	vz2,$14(a2) ; 0x802241BC
+srl	t9,t9,$0D
+andi	t9,t9,$1FF8
+addu	t9,t9,a0
+addiu	a3,a3,-$3
+rtpt sf=12 lm=s16
+addiu	a2,a2,$18
+lwc2	vxy0,$0(a2) ; 0x802241C0
+lwc2	vz0,$4(a2)  ; 0x802241C4
+lwc2	vxy1,$8(a2) ; 0x802241C8
+lwc2	vz1,$c(a2)  ; 0x802241CC
+lwc2	vxy2,$10(a2); 0x802241D0
+lwc2	vz2,$14(a2) ; 0x802241D4
+swc2	sxy0,$0(t9) ; 0x803FAF50
+swc2	sz1,$4(t9)  ; 0x803FAF54
+swc2	sxy1,$8(t9) ; 0x803FAF58
+swc2	sz2,$c(t9)  ; 0x802FAF5C
+swc2	sxy2,$10(t9); 0x803FAF60
+swc2	sz3,$14(t9) ; 0x803FAF64
+bgtz	a3,zero,$800AE578		//branches back to addiu a2,a2,$18 and loops several times
+addiu	t9,t9,$18
+lbu	a3,$1(s1)   ; 0x80223C99	
+nop
+beq	a3,zero,$800AE71C		// doesn't branch
+lw	t0,$4(a2)   ; 0x80224224
+lw	t1,$c(a2)   ; 0x8022422C
+lw	t2,$14(a2)  ; 0x80224234
+mtc2	t0,vz0
+mtc2	t1,vz1
+mtc2	v2,vz2
+lwc2	vxy0,$0(a2) ; 0x80224220
+lwc2	vxy1,$8(a2) ; 0x80224228
+lwc2	vxy2,$10(a2); 0x80224230
+addiu	a3,a3,-$3
+rtpt sf=12 lm=s16
+srl	t3,t0,$12
+srl	t4,t1,$12
+srl	t5,t2,$12
+andi	t3,t3,$0F00
+andi	t4,t4,$0F00
+andi	t5,t5,$0F00
+srl	t6,t0,$0D
+srl	t7,t1,$0D
+srl	t8,t2,$0D
+andi	t6,t6,$1FF8
+andi	t7,t7,$1FF8
+andi	t8,t8,$1FF8
+addu	t6,t6,a0
+addu	t7,t7,a0
+addu	t8,t8,a0
+mfc2	v0,sxy0
+mtc2	t3,ir0
+srl	v1,v0,$10
+mtc2	v0,ir1
+mtc2	v1,ir2
+bgez	t0,$800AE65C			//doesn't branch
+gpf sf=12 lm=s16
+mfc2	v1,mac2
+swc2	sz1,$4(t6) ; 0x803FAFCC
+bgez	zero,$800AE678			//branches
+swc2	mac1,$0(t6); 0x803FAFC8
+sh	v1,$2(t6)  ; 0x803FAFCA
+mfc2	v0,sxy1
+mtc2	t4,ir0
+srl	v1,v0,$10
+mtc2	v0,ir1
+mtc2	v1,ir2
+bgez	t1,$800AE6A8			//doesn't branch
+gpf sf=12 lm=s16
+mfc2	v1,mac2
+swc2	sz2,$4(t7) ; 0x803FAFD4
+bgez	zero,$800AE6C4			//branches
+swc2	mac1,$0(t7); 0x803FAFD0
+sh	v1,$2(t7)  ; 0x803FAFD2
+mfc2	v0,sxy2
+mtc2	t5,ir0
+srl	v1,v0,$10
+mtc2	v0,ir1
+mtc2	v1,ir2
+bgez	t2,$800AE6F4			//doesn't branch
+gpf sf=12 lm=s16
+mfc2	v1,mac2
+swc2	sz3,$4(t8) ; 0x803FAFDC
+bgez	zero,$800AE710			//branches
+swc2	mac1,$0(t8); 0x803FAFD8		
+sh	v1,$2(t8)  ; 0x803FAFDA
+bgtz	a3,zero,$800AE5C8		//branches back to lw	t0,$4(a2)   ; 0x80224224
+addiu	a2,a2,$18
+
+------------------------------------------------------------
+
+//Breakpoint hit at 802241A8
+//Lighting code for submesh 1
+
+addiu	a2,a2,$18
+lwc2	vxy0,$0(a2) ; 0x802241A8
+lwc2	vz0,$4(a2)  ; 0x802241AC
+lwc2	vxy1,$8(a2) ; 0x802241B0
+lwc2	vz1,$c(a2)  ; 0x802241B4
+lwc2	vxy2,$10(a2); 0x802241B8
+lwc2	vz2,$14(a2) ; 0x802241BC
+addiu	a3,a3,-$3
+swc2	rgb0,$0(a0) ; 0x803FCF04
+swc2	rgb1,$4(a0) ; 0x803FCF08
+swc2	rgb2,$8(a0) ; 0x803FCF0C
+bgtz	a3,zero,$800AE750		//Doesn't branch
+addiu	a0,a0,$C
+jr	ra				//Jumps to 800AE508
+nop
+addiu	s5,s5,-$1
+addiu	s1,s1,$20
+bgtz	s5,zero,$800AE4E8		//branches
+addiu	s2,s2,$20
+lhu	t0,$c(s1)   ; 0x80223CA4
+addu	a0,s3,zero
+beq	t0,zero,$800AE508		//doesn't branch
+addiu	a1,s3,$20
+jal	$800AC334			//jumps
+addu	a2,s2,zero			
+addu	a3,ra,zero
+addu	v0,a1,zero
+jal	$800AC254			//jumps
+
+
+
+addu	v1,a2,zero
+lw	t0,$0(v0)   ; 0x1F800020
+lw	t1,$4(v0)   ; 0x1F800024
+lw	t2,$8(v0)   ; 0x1F800028
+lw	t3,$c(v0)   ; 0x1F80002C
+lh	t4,$10(v0)  ; 0x1F800030
+ctc2	t0,r11r12
+ctc2	t1,r13r21
+ctc2	t2,r22r23
+ctc2	t3,r31r32
+ctc2	t4,r33
+lh	t6,$0(v1)   ; 0x803CF510
+lh	t7,$6(v1)   ; 0x803CF516
+lh	t8,$c(v1)   ; 0x803CF51C
+mtc2	t6,ir1
+mtc2	t7,ir2
+mtc2	t8,ir3
+lh	t6,$2(v1)   ; 0x803CF512
+mvmva sf=12 lm=s16 0 + rm * ir			//800AC2C4
+lh	t7,$8(v1)   ; 0x803CF518
+lh	t8,$e(v1)   ; 0x803CF51E
+mfc2	t0,mac1
+mfc2	t1,mac2
+mfc2	t3,mac3
+mtc2	t6,ir1
+mtc2	t7,ir2
+mtc2	t8,ir3
+andi	t0,t0,$FFFF
+mvmva sf=12 lm=s16 0 + rm * ir
+sll	t1,t1,$10
+andi	t3,t3,$FFFF
+lh	t6,$4(v1)   ; 0x803CF514
+lh	t7,$a(v1)   ; 0x803CF51A
+lh	t8,$10(v1)  ; 0x803CF520
+mfc2	t4,mac1
+mfc2	t2,mac2
+mfc2	t5,mac3
+mtc2	t6,ir1
+mtc2	t7,ir2
+mtc2	t8,ir3
+sll	t4,t4,$10
+mvmva	sf=12 lm=s16 0 + rm * ir
+andi	t2,t2,$FFFF
+sll	t5,t5,$10
+or	t0,t0,t4
+or	t3,t3,t5
+mfc2	t5,mac1
+mfc2	t6,mac2
+mfc2	t4,mac3
+andi	t5,t5,$FFFF
+sll	t6,t6,$10
+or	t1,t1,t5
+jr	ra			//jumps to 800AC344
+
+Loop:
+
+or	t2,t2,t6
+ctc2	t0,l11l12
+ctc2	t1,l13l21
+ctc2	t2,l22l23
+ctc2	t3,l31l32
+ctc2	t4,l33
+addu	v0,a0,zero
+jal	$800AC254		//jumps
+addu	v1,a2,zero
+lw	t0,$0(v0)   ; 0x1F800000
+lw	t1,$4(v0)   ; 0x1F800004
+lw	t2,$8(v0)   ; 0x1F800008
+lw	t3,$c(v0)   ; 0x1F80000C
+lh	t4,$10(v0)  ; 0x1F800010
+				//same as previous loop

@@ -117,10 +117,10 @@ int main(int argc, char* argv[])
 	const char* a="0";
 
 	//fptr = fopen("xianghua1P.bin","rb");
-	fptr = fopen("E:\\sc1_model_reader\\Debug\\xianghua1P.bin","rb");
-	wptr = fopen("E:\\sc1_model_reader\\Debug\\xianghua_submesh_positions.bin","wb");
-	wptr2 = fopen("E:\\sc1_model_reader\\Debug\\xianghua_submesh_vertices_unprocessed.bin","wb");
-	wptr3 = fopen("E:\\sc1_model_reader\\Debug\\xianghua_submesh_vertices_processed.bin","wb");
+	fptr = fopen("xianghua1P.bin","rb");
+	wptr = fopen("xianghua_submesh_positions.bin","wb");
+	wptr2 = fopen("xianghua_submesh_vertices_unprocessed.bin","wb");
+	wptr3 = fopen("xianghua_submesh_vertices_processed.bin","wb");
 
 	if(fptr==NULL){
 		printf("Failed to open file. Exiting...");
@@ -155,7 +155,8 @@ int main(int argc, char* argv[])
 	printf("\nunknown5                = 0x%08x", sc1model.Root.unknown5);
 
 	track=ftell(fptr);
-	fseek(fptr,(sc1model.Root.vertex_block_address1 - 0x80223C58),SEEK_SET);		// 0x80223C58 is the address where Player 1's model always loads.
+	//fseek(fptr,(sc1model.Root.vertex_block_address1 - 0x80223C58),SEEK_SET);		// 0x80223C58 is the address where Player 1's model always loads.
+	fseek(fptr,(sc1model.Root.vertex_block_address1),SEEK_SET);
 	read_vertex_block();
 	vblok_counter=0;
 	fseek(fptr,track,SEEK_SET);
@@ -194,7 +195,8 @@ int main(int argc, char* argv[])
 		printf("\nweirdo_address          = 0x%08x", sc1model.Sub.weirdo_address);
 
 		track=ftell(fptr);
-		fseek(fptr,(sc1model.Sub.vertex_block_address - 0x80223C58),SEEK_SET);
+		//fseek(fptr,(sc1model.Sub.vertex_block_address - 0x80223C58),SEEK_SET);
+		fseek(fptr,(sc1model.Sub.vertex_block_address),SEEK_SET);
 		read_vertex_block();
 		vblok_counter=0;
 		fseek(fptr,track,SEEK_SET);

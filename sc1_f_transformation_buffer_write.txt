@@ -1,0 +1,143 @@
+
+/* WARNING: Instruction at (ram,0x800ae5c8) overlaps instruction at (ram,0x800ae5c4)
+    */
+
+void f_write_to_transformation_buffer_800ae544(int param_1)
+
+{
+  uint uVar1;
+  short sVar2;
+  undefined4 uVar3;
+  undefined4 uVar4;
+  SVECTOR *r0;
+  SVECTOR *pSVar5;
+  uint uVar6;
+  uint uVar7;
+  uint uVar8;
+  uint uVar9;
+  uint uVar10;
+  uint uVar11;
+  long *r0_00;
+  byte *unaff_s1;
+  long *r0_01;
+  long *plVar12;
+  
+  r0 = *(SVECTOR **)(unaff_s1 + 4);
+  uVar6 = (uint)*unaff_s1;
+  gte_ldVXY0(r0);
+  gte_ldVXY1(r0 + 1);
+  gte_ldVXY2(r0 + 2);
+  gte_ldVZ0(*(uint *)&r0->vz);
+  if (uVar6 != 0) {
+    gte_ldVZ1(&r0[1].vz);
+    gte_ldVZ2(&r0[2].vz);
+    plVar12 = (long *)((*(uint *)&r0->vz >> 0xd & 0x1ff8) + param_1);
+    do {
+      uVar6 = uVar6 - 3;
+      gte_rtpt_b();
+      r0 = r0 + 3;
+      gte_ldv3c(r0);
+      gte_stsxy0(plVar12);
+      gte_stSZ1();
+      gte_stSXY1();
+      gte_stSZ2();
+      gte_stSXY2();
+      gte_stSZ3();
+      plVar12 = plVar12 + 6;
+    } while (0 < (int)uVar6);
+  }
+  uVar6 = (uint)unaff_s1[1];
+  uVar7 = *(uint *)&r0->vz;
+  if (uVar6 != 0) {
+    while( true ) {
+      uVar8 = *(uint *)&r0[1].vz;
+      uVar9 = *(uint *)&r0[2].vz;
+      gte_ldVZ0(uVar7);
+      gte_ldVZ1(uVar8);
+      gte_ldVZ2(uVar9);
+      gte_ldVXY0(r0);
+      gte_ldVXY1(r0 + 1);
+      gte_ldVXY2(r0 + 2);
+      uVar6 = uVar6 - 3;
+      gte_rtpt_b();
+      uVar10 = uVar8 >> 0x12 & 0xf00;
+      uVar11 = uVar9 >> 0x12 & 0xf00;
+      plVar12 = (long *)((uVar7 >> 0xd & 0x1ff8) + param_1);
+      r0_00 = (long *)((uVar8 >> 0xd & 0x1ff8) + param_1);
+      r0_01 = (long *)((uVar9 >> 0xd & 0x1ff8) + param_1);
+      uVar1 = gte_stSXY0();
+      gte_ldIR0(uVar7 >> 0x12 & 0xf00);
+      gte_ldIR1(uVar1);
+      gte_ldIR2(uVar1 >> 0x10);
+      gte_gpf12_b();
+      if ((int)uVar7 < 0) {
+        uVar3 = gte_stMAC2();
+        sVar2 = (short)uVar3;
+        gte_stSZ1();
+        gte_stlvnl0(plVar12);
+        pSVar5 = r0;
+      }
+      else {
+        uVar3 = gte_stMAC1();
+        uVar4 = gte_stMAC2();
+        sVar2 = (short)uVar4 + (short)((uint)*plVar12 >> 0x10);
+        *(short *)plVar12 = (short)uVar3 + (short)*plVar12;
+        pSVar5 = r0;
+      }
+      *(short *)((int)plVar12 + 2) = sVar2;
+      uVar7 = gte_stSXY1();
+      gte_ldIR0(uVar10);
+      gte_ldIR1(uVar7);
+      gte_ldIR2(uVar7 >> 0x10);
+      gte_gpf12_b();
+      if ((int)uVar8 < 0) {
+        uVar3 = gte_stMAC2();
+        sVar2 = (short)uVar3;
+        gte_stSZ2();
+        gte_stlvnl0(r0_00);
+      }
+      else {
+        uVar3 = gte_stMAC1();
+        uVar4 = gte_stMAC2();
+        sVar2 = (short)uVar4 + (short)((uint)*r0_00 >> 0x10);
+        *(short *)r0_00 = (short)uVar3 + (short)*r0_00;
+      }
+      *(short *)((int)r0_00 + 2) = sVar2;
+      uVar7 = gte_stSXY2();
+      gte_ldIR0(uVar11);
+      gte_ldIR1(uVar7);
+      gte_ldIR2(uVar7 >> 0x10);
+      gte_gpf12_b();
+      if ((int)uVar9 < 0) {
+        uVar3 = gte_stMAC2();
+        sVar2 = (short)uVar3;
+        gte_stSZ3();
+        gte_stlvnl0(r0_01);
+      }
+      else {
+        uVar3 = gte_stMAC1();
+        uVar4 = gte_stMAC2();
+        sVar2 = (short)uVar4 + (short)((uint)*r0_01 >> 0x10);
+        *(short *)r0_01 = (short)uVar3 + (short)*r0_01;
+      }
+      *(short *)((int)r0_01 + 2) = sVar2;
+      r0 = pSVar5 + 3;
+      if ((int)uVar6 < 1) break;
+      uVar7 = *(uint *)&pSVar5[3].vz;
+    }
+  }
+  uVar6 = (uint)*(ushort *)(unaff_s1 + 0xe);
+  if (uVar6 != 0) {
+    gte_ldv3c(r0);
+    do {
+      gte_nct_b();
+      r0 = r0 + 3;
+      gte_ldv3c(r0);
+      uVar6 = uVar6 - 3;
+      gte_stRGB0();
+      gte_stRGB1();
+      gte_stRGB2();
+    } while (0 < (int)uVar6);
+  }
+  return;
+}

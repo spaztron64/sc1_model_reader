@@ -1,0 +1,49 @@
+                             **************************************************************
+                             *                          FUNCTION                          *
+                             **************************************************************
+                             undefined f_apply_animation_800ac334()
+             undefined         v0:1           <RETURN>
+                             f_apply_animation_800ac334                      XREF[5]:     FUN_800adfd4:800ae04c(c), 
+                                                                                          f_transformation_routine_800ae47
+                                                                                          FUN_800aeee8:800aef68(c), 
+                                                                                          FUN_800b1768:800b17ec(c), 
+                                                                                          FUN_800b2220:800b22a8(c)  
+        800ac334 21 38 e0 03     move       a3,ra
+        800ac338 21 10 a0 00     move       v0,a1
+        800ac33c 95 b0 02 0c     jal        FUN_800ac254                                     undefined FUN_800ac254()
+        800ac340 21 18 c0 00     _move      v1,a2
+        800ac344 00 40 c8 48     gte_ldL1   t0
+        800ac348 00 48 c9 48     gte_ldL1   t1
+        800ac34c 00 50 ca 48     gte_ldL2   t2
+        800ac350 00 58 cb 48     gte_ldL3   t3
+        800ac354 00 60 cc 48     gte_ldL33  t4
+                             LAB_800ac358                                    XREF[1]:     FUN_800ac328:800ac32c(j)  
+        800ac358 21 10 80 00     move       v0,a0
+        800ac35c 95 b0 02 0c     jal        FUN_800ac254                                     undefined FUN_800ac254()
+        800ac360 21 18 c0 00     _move      v1,a2
+        800ac364 14 00 cd 8c     lw         t5,0x14(a2)
+        800ac368 18 00 ce 8c     lw         t6,0x18(a2)
+        800ac36c 1c 00 cf 8c     lw         t7,0x1c(a2)
+        800ac370 00 48 8d        ldsv_      t5,t6,t7
+                 48 00 50 
+                 8e 48 00 
+        800ac37c 14 00 86 8c     lw         a2,0x14(a0)
+        800ac380 12 e0 49 4a     RTIR
+        800ac384 18 00 85 8c     lw         a1,0x18(a0)
+        800ac388 1c 00 84 8c     lw         a0,0x1c(a0)
+        800ac38c 00 c8 0d        read_mt    t5,t6,t7
+                 48 00 d0 
+                 0e 48 00 
+        800ac398 21 68 a6 01     addu       t5,t5,a2
+        800ac39c 21 70 c5 01     addu       t6,t6,a1
+        800ac3a0 21 78 e4 01     addu       t7,t7,a0
+        800ac3a4 00 00 c8 48     gte_ldR1   t0
+        800ac3a8 00 08 c9 48     gte_ldR1   t1
+        800ac3ac 00 10 ca 48     gte_ldR2   t2
+        800ac3b0 00 18 cb 48     gte_ldR3   t3
+        800ac3b4 00 20 cc 48     gte_ldR33  t4
+        800ac3b8 00 28 cd        ldtr       t5,t6,t7
+                 48 00 30 
+                 ce 48 00 
+        800ac3c4 08 00 e0 00     jr         a3
+        800ac3c8 21 10 e0 01     _move      v0,t7

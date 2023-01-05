@@ -1,0 +1,157 @@
+                             **************************************************************
+                             *                          FUNCTION                          *
+                             **************************************************************
+                             undefined f_write_to_transformation_buffer_800ae544()
+             undefined         v0:1           <RETURN>
+                             f_write_to_transformation_buffer_800ae544       XREF[2]:     f_character_transformation_routi
+                                                                                          FUN_800aeee8:800aef70(c)  
+        800ae544 04 00 26 8e     lw         a2,0x4(s1)
+        800ae548 00 00 27 92     lbu        a3,0x0(s1)
+        800ae54c 04 00 d9 8c     lw         t9,0x4(a2)
+        800ae550 00 00 c0 c8     gte_ldVXY0 0x0(a2)
+        800ae554 08 00 c2 c8     gte_ldVXY1 0x8(a2)
+        800ae558 10 00 c4 c8     gte_ldVXY2 0x10(a2)
+        800ae55c 17 00 e0 10     beq        a3,zero,LAB_800ae5bc
+        800ae560 00 08 99 48     _gte_ldVZ0 t9
+        800ae564 0c 00 c3 c8     gte_ldVZ1  0xc(a2)
+        800ae568 14 00 c5 c8     gte_ldVZ2  0x14(a2)
+        800ae56c 42 cb 19 00     srl        t9,t9,0xd
+        800ae570 f8 1f 39 33     andi       t9,t9,0x1ff8
+        800ae574 21 c8 24 03     addu       t9,t9,a0
+                             LAB_800ae578                                    XREF[1]:     800ae5b4(j)  
+        800ae578 fd ff e7 24     addiu      a3,a3,-0x3
+        800ae57c 30 00 28 4a     RTPT
+        800ae580 18 00 c6 24     addiu      a2,a2,0x18
+        800ae584 00 00 c0        ldv3c      a2                                               void gte_ldv3c(SVECTOR * r0)
+                 c8 04 00 
+                 c1 c8 08 
+        800ae59c 00 00 2c eb     stsxy0     t9                                               void gte_stsxy0(long * r0)
+        800ae5a0 04 00 31 eb     gte_stSZ1  0x4(t9)
+        800ae5a4 08 00 2d eb     gte_stSXY1 0x8(t9)
+        800ae5a8 0c 00 32 eb     gte_stSZ2  0xc(t9)
+        800ae5ac 10 00 2e eb     gte_stSXY2 0x10(t9)
+        800ae5b0 14 00 33 eb     gte_stSZ3  0x14(t9)
+        800ae5b4 f0 ff e0 1c     bgtz       a3,LAB_800ae578
+        800ae5b8 18 00 39 27     _addiu     t9,t9,0x18
+                             LAB_800ae5bc                                    XREF[1]:     800ae55c(j)  
+        800ae5bc 01 00 27 92     lbu        a3,0x1(s1)
+        800ae5c0 00 00 00 00     nop
+        800ae5c4 55 00 e0 10     beq        a3,zero,LAB_800ae71c
+                             LAB_800ae5c8                                    XREF[1]:     800ae714(j)  
+        800ae5c8 04 00 c8 8c     _lw        t0,0x4(a2)
+        800ae5cc 0c 00 c9 8c     lw         t1,0xc(a2)
+        800ae5d0 14 00 ca 8c     lw         t2,0x14(a2)
+        800ae5d4 00 08 88 48     gte_ldVZ0  t0
+        800ae5d8 00 18 89 48     gte_ldVZ1  t1
+        800ae5dc 00 28 8a 48     gte_ldVZ2  t2
+        800ae5e0 00 00 c0 c8     gte_ldVXY0 0x0(a2)
+        800ae5e4 08 00 c2 c8     gte_ldVXY1 0x8(a2)
+        800ae5e8 10 00 c4 c8     gte_ldVXY2 0x10(a2)
+        800ae5ec fd ff e7 24     addiu      a3,a3,-0x3
+        800ae5f0 30 00 28 4a     RTPT
+        800ae5f4 82 5c 08 00     srl        t3,t0,0x12
+        800ae5f8 82 64 09 00     srl        t4,t1,0x12
+        800ae5fc 82 6c 0a 00     srl        t5,t2,0x12
+        800ae600 00 0f 6b 31     andi       t3,t3,0xf00
+        800ae604 00 0f 8c 31     andi       t4,t4,0xf00
+        800ae608 00 0f ad 31     andi       t5,t5,0xf00
+        800ae60c 42 73 08 00     srl        t6,t0,0xd
+        800ae610 42 7b 09 00     srl        t7,t1,0xd
+        800ae614 42 c3 0a 00     srl        t8,t2,0xd
+        800ae618 f8 1f ce 31     andi       t6,t6,0x1ff8
+        800ae61c f8 1f ef 31     andi       t7,t7,0x1ff8
+        800ae620 f8 1f 18 33     andi       t8,t8,0x1ff8
+        800ae624 21 70 c4 01     addu       t6,t6,a0
+        800ae628 21 78 e4 01     addu       t7,t7,a0
+        800ae62c 21 c0 04 03     addu       t8,t8,a0
+        800ae630 00 60 02 48     gte_stSXY0 v0
+        800ae634 00 40 8b 48     gte_ldIR0  t3
+        800ae638 02 1c 02 00     srl        v1,v0,0x10
+        800ae63c 00 48 82 48     gte_ldIR1  v0
+        800ae640 00 50 83 48     gte_ldIR2  v1
+        800ae644 05 00 01 05     bgez       t0,LAB_800ae65c
+        800ae648 3d 00 98 4b     _GPF12
+        800ae64c 00 d0 03 48     gte_stMAC2 v1
+        800ae650 04 00 d1 e9     gte_stSZ1  0x4(t6)
+        800ae654 08 00 01 04     bgez       zero,LAB_800ae678
+        800ae658 00 00 d9 e9     _stlvnl0   t6
+                             LAB_800ae65c                                    XREF[1]:     800ae644(j)  
+        800ae65c 00 00 c1 8d     lw         at,0x0(t6)
+        800ae660 00 c8 02 48     gte_stMAC1 v0
+        800ae664 00 d0 03 48     gte_stMAC2 v1
+        800ae668 03 44 01 00     sra        t0,at,0x10
+        800ae66c 21 10 41 00     addu       v0,v0,at
+        800ae670 21 18 68 00     addu       v1,v1,t0
+        800ae674 00 00 c2 a5     sh         v0,0x0(t6)
+                             LAB_800ae678                                    XREF[1]:     800ae654(j)  
+        800ae678 02 00 c3 a5     sh         v1,0x2(t6)
+        800ae67c 00 68 02 48     gte_stSXY1 v0
+        800ae680 00 40 8c 48     gte_ldIR0  t4
+        800ae684 02 1c 02 00     srl        v1,v0,0x10
+        800ae688 00 48 82 48     gte_ldIR1  v0
+        800ae68c 00 50 83 48     gte_ldIR2  v1
+        800ae690 05 00 21 05     bgez       t1,LAB_800ae6a8
+        800ae694 3d 00 98 4b     _GPF12
+        800ae698 00 d0 03 48     gte_stMAC2 v1
+        800ae69c 04 00 f2 e9     gte_stSZ2  0x4(t7)
+        800ae6a0 08 00 01 04     bgez       zero,LAB_800ae6c4
+        800ae6a4 00 00 f9 e9     _stlvnl0   t7
+                             LAB_800ae6a8                                    XREF[1]:     800ae690(j)  
+        800ae6a8 00 00 e1 8d     lw         at,0x0(t7)
+        800ae6ac 00 c8 02 48     gte_stMAC1 v0
+        800ae6b0 00 d0 03 48     gte_stMAC2 v1
+        800ae6b4 03 44 01 00     sra        t0,at,0x10
+        800ae6b8 21 10 41 00     addu       v0,v0,at
+        800ae6bc 21 18 68 00     addu       v1,v1,t0
+        800ae6c0 00 00 e2 a5     sh         v0,0x0(t7)
+                             LAB_800ae6c4                                    XREF[1]:     800ae6a0(j)  
+        800ae6c4 02 00 e3 a5     sh         v1,0x2(t7)
+        800ae6c8 00 70 02 48     gte_stSXY2 v0
+        800ae6cc 00 40 8d 48     gte_ldIR0  t5
+        800ae6d0 02 1c 02 00     srl        v1,v0,0x10
+        800ae6d4 00 48 82 48     gte_ldIR1  v0
+        800ae6d8 00 50 83 48     gte_ldIR2  v1
+        800ae6dc 05 00 41 05     bgez       t2,LAB_800ae6f4
+        800ae6e0 3d 00 98 4b     _GPF12
+        800ae6e4 00 d0 03 48     gte_stMAC2 v1
+        800ae6e8 04 00 13 eb     gte_stSZ3  0x4(t8)
+        800ae6ec 08 00 01 04     bgez       zero,LAB_800ae710
+        800ae6f0 00 00 19 eb     _stlvnl0   t8
+                             LAB_800ae6f4                                    XREF[1]:     800ae6dc(j)  
+        800ae6f4 00 00 01 8f     lw         at,0x0(t8)
+        800ae6f8 00 c8 02 48     gte_stMAC1 v0
+        800ae6fc 00 d0 03 48     gte_stMAC2 v1
+        800ae700 03 44 01 00     sra        t0,at,0x10
+        800ae704 21 10 41 00     addu       v0,v0,at
+        800ae708 21 18 68 00     addu       v1,v1,t0
+        800ae70c 00 00 02 a7     sh         v0,0x0(t8)
+                             LAB_800ae710                                    XREF[1]:     800ae6ec(j)  
+        800ae710 02 00 03 a7     sh         v1,0x2(t8)
+        800ae714 ac ff e0 1c     bgtz       a3,LAB_800ae5c8
+        800ae718 18 00 c6 24     _addiu     a2,a2,0x18
+                             LAB_800ae71c                                    XREF[1]:     800ae5c4(j)  
+        800ae71c 0e 00 27 96     lhu        a3,0xe(s1)
+        800ae720 00 20 85 24     addiu      a1,a0,0x2000
+        800ae724 18 00 e0 10     beq        a3,zero,LAB_800ae788
+        800ae728 04 00 c8 8c     _lw        t0,0x4(a2)
+        800ae72c 00 00 c0        ldv3c      a2                                               void gte_ldv3c(SVECTOR * r0)
+                 c8 04 00 
+                 c1 c8 08 
+        800ae744 82 43 08 00     srl        t0,t0,0xe
+        800ae748 fc 0f 08 31     andi       t0,t0,0xffc
+        800ae74c 21 20 05 01     addu       a0,t0,a1
+                             LAB_800ae750                                    XREF[1]:     800ae780(j)  
+        800ae750 20 04 d8 4a     NCT
+        800ae754 18 00 c6 24     addiu      a2,a2,0x18
+        800ae758 00 00 c0        ldv3c      a2                                               void gte_ldv3c(SVECTOR * r0)
+                 c8 04 00 
+                 c1 c8 08 
+        800ae770 fd ff e7 24     addiu      a3,a3,-0x3
+        800ae774 00 00 94 e8     gte_stRGB0 0x0(a0)
+        800ae778 04 00 95 e8     gte_stRGB1 0x4(a0)
+        800ae77c 08 00 96 e8     gte_stRGB2 0x8(a0)
+        800ae780 f3 ff e0 1c     bgtz       a3,LAB_800ae750
+        800ae784 0c 00 84 24     _addiu     a0,a0,0xc
+                             LAB_800ae788                                    XREF[1]:     800ae724(j)  
+        800ae788 08 00 e0 03     jr         ra
+        800ae78c 00 00 00 00     _nop
